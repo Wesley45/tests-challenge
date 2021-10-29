@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class accountsTable1616682561481 implements MigrationInterface {
+export class transfersTable1635457877627 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "statements",
+        name: "transfers",
         columns: [
           {
             name: "id",
@@ -12,28 +12,23 @@ export class accountsTable1616682561481 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "user_id",
+            name: "sender_id",
             type: "uuid",
           },
           {
-            name: "sender_id",
-            type: "uuid",
-            isNullable: true,
+            name: "amount",
+            type: "decimal",
+            precision: 10,
+            scale: 2,
           },
           {
             name: "description",
             type: "varchar",
           },
           {
-            name: "amount",
-            type: "decimal",
-            precision: 5,
-            scale: 2,
-          },
-          {
             name: "type",
             type: "enum",
-            enum: ["deposit", "withdraw", "transfer"],
+            enum: ["transfer"],
           },
           {
             name: "created_at",
@@ -48,15 +43,7 @@ export class accountsTable1616682561481 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "statements",
-            columnNames: ["user_id"],
-            referencedTableName: "users",
-            referencedColumnNames: ["id"],
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-          },
-          {
-            name: "statements_transfer",
+            name: "transfers",
             columnNames: ["sender_id"],
             referencedTableName: "users",
             referencedColumnNames: ["id"],
@@ -69,6 +56,6 @@ export class accountsTable1616682561481 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("statements");
+    await queryRunner.dropTable("transfers");
   }
 }
